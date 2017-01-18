@@ -69,13 +69,17 @@ withTransaction ::
   -> (Transaction e -> IO a)
   -> IO a
 withTransaction e@(Environment env) f = do
+  putStrLn "withTransaction..."
   let isReadOnly = modeIsReadOnly e
   bool runInBoundThread id isReadOnly $ bracketOnError
     (mdb_txn_begin env Nothing isReadOnly)
     mdb_txn_abort
     $ \txn -> do
+      putStrLn "calling action..."
       a <- f (Transaction txn)
+      putStrLn "...committing transaction..."
       mdb_txn_commit txn
+      putStrLn "... transaction done"
       return a
 
 withNestedTransaction ::
