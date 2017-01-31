@@ -72,7 +72,11 @@ withTransaction e@(Environment env) f = do
   putStrLn "withTransaction..."
   let isReadOnly = modeIsReadOnly e
   bool runInBoundThread id isReadOnly $ bracketOnError
-    (mdb_txn_begin env Nothing isReadOnly)
+    (do putStrLn "before transaction begin..."
+        res <- mdb_txn_begin env Nothing isReadOnly
+        putStrLn "... after transaction begin"
+        return res
+    )
     mdb_txn_abort
     $ \txn -> do
       putStrLn "calling action..."
