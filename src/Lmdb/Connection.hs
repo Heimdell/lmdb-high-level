@@ -15,7 +15,7 @@ import Foreign.Storable
 import Data.Coerce
 import Data.Functor
 import Data.Bits
-import Control.Concurrent (runInBoundThread,isCurrentThreadBound)
+import Control.Concurrent (runInBoundThread,isCurrentThreadBound, myThreadId)
 import Data.Bool (bool)
 import System.IO (withFile,IOMode(ReadMode))
 import Foreign.C.Types (CSize(..))
